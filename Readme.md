@@ -1,3 +1,3 @@
 # BrewingComputations
 
-The repository contains modules for some computations needed by homebrewers.
+This repository contains Haskell-modules for some computations needed by homebrewers.
