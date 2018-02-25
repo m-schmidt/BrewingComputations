@@ -15,7 +15,7 @@ gravityForExtract :: Extract -> Gravity
 gravityForExtract = gravityForExtract_default
 
 
--- |Default implementation: well known quadrativ formula and its inverse
+-- |Default implementation: well known quadratic equation and its inverse
 extractForGravity_default :: Gravity -> Extract
 extractForGravity_default sg = -463.37 + 668.72 * sg - 205.347 * sg**2
 
@@ -23,7 +23,7 @@ gravityForExtract_default :: Extract -> Gravity
 gravityForExtract_default e = (334360 - sqrt (16644970210 - 205347000 * e)) / 205347
 
 
--- |Alternate implementation: cubic formula and its inverse
+-- |Alternate implementation: cubic equation and its inverse
 extractForGravity_cubic :: Gravity -> Extract
 extractForGravity_cubic sg = -668.962 + 1262.45 * sg - 776.43 * sg**2 + 182.94 * sg**3
 
