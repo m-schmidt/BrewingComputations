@@ -66,7 +66,7 @@ carbonateAlkalinity hco3 unit =
   case unit of
     Unit_mmolPerLiter     -> hco3 / mmol_HCO3
     Unit_mgPerLiter       -> hco3 / molecularMass_HCO3 / mmol_HCO3
-    Unit_ppm              -> undefined
+    Unit_ppm              -> hco3 / molecularMass_HCO3 / mmol_HCO3
     Unit_mvalPerLiter     -> hco3 / mmol_HCO3
     Unit_germanAlkalinity -> hco3
     Unit_frenchAlkalinity -> hco3 * mmol_CaCO3 / mmol_CaO
