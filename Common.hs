@@ -1,16 +1,16 @@
 module Common where
 
 -- |Unit aliases
-type Density     = Double   -- (g/ml)
-type Temperature = Double   -- (°C)
-type Duration    = Double   -- (s, seconds)
-type Extract     = Double   -- (°P or g/100g)
-type Gravity     = Double   -- (SG)
-type Refraction  = Double   -- (°Bx)
-type Percentage  = Double   -- (%, i.e. 1.0 for 100%)
-type Volume      = Double   -- (l, liters)
-type Weight      = Double   -- (g)
-type IBU         = Double   -- (ibu)
+type Density     = Double   -- ^ (g/ml)
+type Temperature = Double   -- ^ (°C)
+type Duration    = Double   -- ^ (s, seconds)
+type Extract     = Double   -- ^ (°P or g/100g)
+type Gravity     = Double   -- ^ (SG, Specific Gravity)
+type Refraction  = Double   -- ^ (°Bx, Brix)
+type Percentage  = Double   -- ^ (%, i.e. 1.0 for 100%)
+type Volume      = Double   -- ^ (l, liters)
+type Weight      = Double   -- ^ (g)
+type IBU         = Double   -- ^ (ibu)
 
 
 -- |Balling's constant

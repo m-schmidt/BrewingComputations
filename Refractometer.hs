@@ -40,7 +40,7 @@ convStandard wc ri rf =
 
 
 -- |Compute apparent specific gravity according the formula developed by Kleier.
--- To compute the actual final gravity a wort correction `wc` (typically 1.03 to 1.04) is used
+-- The initial refraction is converted to an extract using wort correction `wc` (typically 1.03 to 1.04)
 --
 -- http://hobbybrauer.de/modules.php?name=eBoard&file=viewthread&tid=11943&page=2#pid129201
 convKleier :: Double -> Refraction -> Refraction -> Gravity
