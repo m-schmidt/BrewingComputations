@@ -23,12 +23,6 @@ basePolynomial x xj xis = product $ map (\xi -> (x - xi) / (xj - xi)) xis
 
 
 -- |Generate all sublists of `xs` where the nth list of the result contains all but the nth element of `xs`.
--- Example:
---
--- > sublists [1..4] == [[2,3,4], [1,3,4], [1,2,4], [1,2,3]]
 sublists :: [a] -> [[a]]
-sublists [] = []
-sublists xs = reverse $ combinations (length xs - 1) xs
-  where
-    combinations 0 _  = [[]]
-    combinations n xs = [ y:ys | y:xs' <- tails xs, ys <- combinations (n-1) xs' ]
+sublists [_]    = [[]]
+sublists (x:xs) = xs : map (x:) (sublists xs)
