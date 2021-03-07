@@ -10,7 +10,8 @@ import DeClerck
 
 -- Supported refractometer formulas
 data RefractometerFormula = Standard
-                          | Kleier
+                          | NovotnyLinear
+                          | NovotnyQuadratic
                           | TerrillCubic
                           | TerrillLinear
                           deriving (Enum)
@@ -18,14 +19,14 @@ data RefractometerFormula = Standard
 
 -- |Compute apparent specific gravity (SG) from initial refraction `ri` and final refraction `rf` using the specified formula.
 apparentSG :: RefractometerFormula -> Double -> Refraction -> Refraction -> Gravity
-apparentSG Standard      = convStandard
-apparentSG Kleier        = convKleier
-apparentSG TerrillCubic  = convTerrillCubic
-apparentSG TerrillLinear = convTerrillLinear
+apparentSG Standard         = convStandard
+apparentSG NovotnyLinear    = convNovotnyLinear
+apparentSG NovotnyQuadratic = convNovotnyQuadratic
+apparentSG TerrillCubic     = convTerrillCubic
+apparentSG TerrillLinear    = convTerrillLinear
 
 
 -- |Compute apparent specific gravity according the standard formula.
--- The initial refraction is converted to an extract using wort correction `wc` (typically 1.03 to 1.04)
 convStandard :: Double -> Refraction -> Refraction -> Gravity
 convStandard wc ri rf =
   1.001843
@@ -39,19 +40,32 @@ convStandard wc ri rf =
     ri_corrected = ri / wc
 
 
--- |Compute apparent specific gravity according the formula developed by Kleier.
--- The initial refraction is converted to an extract using wort correction `wc` (typically 1.03 to 1.04)
---
--- http://hobbybrauer.de/modules.php?name=eBoard&file=viewthread&tid=11943&page=2#pid129201
-convKleier :: Double -> Refraction -> Refraction -> Gravity
-convKleier wc ri rf = gravityForExtract fg_apparent
+-- |Compute apparent specific gravity according the linear formula by Petr Novotný
+convNovotnyLinear :: Double -> Refraction -> Refraction -> Gravity
+convNovotnyLinear wc ri rf =
+  1.0
+  - 0.2349e-2 * ri_corrected
+  + 0.6276e-2 * rf_corrected
   where
-    fg_actual   = (balling * rf - 0.44552 * ri) / (balling * wc - 0.44552)
-    fg_apparent = fg_actual * (1.22 + 0.001 * ri) - ((0.22 + 0.001 * ri) * ri)
+    ri_corrected = ri / wc
+    rf_corrected = rf / wc
+
+
+-- |Compute apparent specific gravity according the quadratic formula by Petr Novotný
+convNovotnyQuadratic :: Double -> Refraction -> Refraction -> Gravity
+convNovotnyQuadratic wc ri rf = gravityForExtract fg_apparent
+  1.0
+  + 0.1335e-4 * ri_corrected**2
+  - 0.3239e-4 * ri_corrected * rf_corrected
+  + 0.2916e-4 * rf_corrected**2
+  - 0.2421e-2   * ri_corrected
+  + 0.6219e-2   * rf_corrected
+  where
+    ri_corrected = ri / wc
+    rf_corrected = rf / wc
 
 
 -- |Compute apparent specific gravity according the new cubic formula of Sean Terrill.
--- The initial and final refraction values are converted to extract values using wort correction `wc` (typically 1.03 to 1.04)
 convTerrillCubic :: Double -> Refraction -> Refraction -> Gravity
 convTerrillCubic wc ri rf =
   1.0
@@ -67,7 +81,6 @@ convTerrillCubic wc ri rf =
 
 
 -- |Compute apparent specific gravity according the new linear formula of Sean Terrill.
--- The initial refraction is converted to an extract using wort correction `wc` (typically 1.03 to 1.04)
 convTerrillLinear :: Double -> Refraction -> Refraction -> Gravity
 convTerrillLinear wc ri rf = 1.0 - 0.85683e-3 * ri_corrected + 0.34941e-2 * rf_corrected
   where
@@ -76,7 +89,6 @@ convTerrillLinear wc ri rf = 1.0 - 0.85683e-3 * ri_corrected + 0.34941e-2 * rf_c
 
 
 -- |Convert apparent specific gravity `g` measured for wort with an initial refraction `ri` to the actual specific gravity.
--- The initial refraction is converted to an extract using wort correction `wc` (typically 1.03 to 1.04)
 apparentToActualSG :: Double -> Refraction -> Gravity -> Gravity
 apparentToActualSG wc ri g = gravityForExtract $ 0.1808 * ri_corrected + 0.8192 * extract
   where
