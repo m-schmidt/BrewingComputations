@@ -49,8 +49,9 @@ hopAmountsByWeight ibu v as us hs = scale (amount0_initial * ibu_scale) amounts_
     ibu_scale = ibu / total_ibu_initial
     -- helper to scale a list `xs` such that the head element becomes `v`
     scale v xs@(x0:_) = map (\x -> x * v/x0) xs
+    scale _ _ = undefined
 
 
 -- |Compute hop amounts (g) such that a wort of volume `v` (l) reaches a total bitterness `ibu` when hops with ibu distribution `is`, alpha values `as`, and utilizations `us` (all %) are added.
 hopAmountsByIBU :: IBU -> Volume -> [Percentage] -> [Percentage] -> [Percentage] -> [Weight]
-hopAmountsByIBU ibu v as us is = zipWith3 (\a u i -> amount (ibu * i) v a u) as us is
+hopAmountsByIBU ibu v = zipWith3 (\a u i -> amount (ibu * i) v a u)
