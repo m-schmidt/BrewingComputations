@@ -27,6 +27,7 @@ apparentSG TerrillLinear    = convTerrillLinear
 
 
 -- |Compute apparent specific gravity according the standard formula.
+-- |Formula according Louis K. Bonham: "The Use of Handheld Refractometers by Homebrewers" in the Zymurgy January/February 2001
 convStandard :: Double -> Refraction -> Refraction -> Gravity
 convStandard wc ri rf =
   1.001843
@@ -41,6 +42,7 @@ convStandard wc ri rf =
 
 
 -- |Compute apparent specific gravity according the linear formula by Petr Novotný
+-- |http://www.diversity.beer/2017/01/pocitame-nova-korekce-refraktometru.html
 convNovotnyLinear :: Double -> Refraction -> Refraction -> Gravity
 convNovotnyLinear wc ri rf =
   1.0
@@ -52,6 +54,7 @@ convNovotnyLinear wc ri rf =
 
 
 -- |Compute apparent specific gravity according the quadratic formula by Petr Novotný
+-- |http://www.diversity.beer/2017/01/pocitame-nova-korekce-refraktometru.html
 convNovotnyQuadratic :: Double -> Refraction -> Refraction -> Gravity
 convNovotnyQuadratic wc ri rf = gravityForExtract fg_apparent
   1.0
@@ -66,6 +69,7 @@ convNovotnyQuadratic wc ri rf = gravityForExtract fg_apparent
 
 
 -- |Compute apparent specific gravity according the new cubic formula of Sean Terrill.
+-- |http://seanterrill.com
 convTerrillCubic :: Double -> Refraction -> Refraction -> Gravity
 convTerrillCubic wc ri rf =
   1.0
@@ -81,6 +85,7 @@ convTerrillCubic wc ri rf =
 
 
 -- |Compute apparent specific gravity according the new linear formula of Sean Terrill.
+-- |http://seanterrill.com
 convTerrillLinear :: Double -> Refraction -> Refraction -> Gravity
 convTerrillLinear wc ri rf = 1.0 - 0.85683e-3 * ri_corrected + 0.34941e-2 * rf_corrected
   where
